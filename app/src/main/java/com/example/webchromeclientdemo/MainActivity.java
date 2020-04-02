@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ContentFrameLayout;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
+import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -32,14 +35,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         webView = findViewById(R.id.web_view);
-                webView.setWebChromeClient(new WebChromeClient() {
-@Override
-public void onProgressChanged(WebView view, int newProgress) {
-        super.onProgressChanged(view, newProgress);
-        ContentFrameLayout contentLayout;
-
-        }
-        });
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setAllowFileAccessFromFileURLs(true);
+        webSettings.setAllowUniversalAccessFromFileURLs(true);
         webView.setWebViewClient(new WebViewClient());
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -47,6 +46,7 @@ public void onProgressChanged(WebView view, int newProgress) {
         webView.getSettings().setDatabaseEnabled(true);
         webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webView.getSettings().setAppCacheEnabled(true);
+        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         WebSettings webViewSettings = webView.getSettings();
         webViewSettings.setBuiltInZoomControls(true);
         webViewSettings.setPluginState(WebSettings.PluginState.ON);
@@ -59,8 +59,32 @@ public void onProgressChanged(WebView view, int newProgress) {
         webViewSettings.setBuiltInZoomControls(true);
         webViewSettings.setAllowFileAccess(true);
         webViewSettings.setSupportZoom(true);
+        webView.getSettings().setPluginState(WebSettings.PluginState.ON);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.setFocusable(true);
+        webView.setFocusableInTouchMode(true);
+        webView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setDomStorageEnabled(true);
+        webView.getSettings().setAppCacheEnabled(true);
+        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+       // webView.addJavascriptInterface(new WebAppInterface(this), "Android");
 
-        webView.loadUrl("https://appr.tc/r/4578903456");
+// Set a web view client and a chrome client
+        webView.setWebViewClient(new WebViewClient());
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onPermissionRequest(final PermissionRequest request) {
+                MainActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        request.grant(request.getResources());
+                    }
+                });
+            }
+        });
+        webView.loadUrl("https://appr.tc/r/84165087988");
         }
 
 
