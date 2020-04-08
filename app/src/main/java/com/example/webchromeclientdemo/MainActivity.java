@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ContentFrameLayout;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,11 +14,17 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.JavascriptInterface;
 import android.webkit.PermissionRequest;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.StackView;
+import android.widget.Toast;
 
 import java.net.URL;
 
@@ -25,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     WebView webView;
     private static final String TAG = MainActivity.class.getSimpleName();
+    @SuppressLint("JavascriptInterface")
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
         webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webView.getSettings().setAppCacheEnabled(true);
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+        webView.getSettings().setMediaPlaybackRequiresUserGesture(false);
         WebSettings webViewSettings = webView.getSettings();
         webViewSettings.setBuiltInZoomControls(true);
         webViewSettings.setPluginState(WebSettings.PluginState.ON);
@@ -69,10 +79,12 @@ public class MainActivity extends AppCompatActivity {
         webView.getSettings().setDomStorageEnabled(true);
         webView.getSettings().setAppCacheEnabled(true);
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-       // webView.addJavascriptInterface(new WebAppInterface(this), "Android");
-
+        webView.setWebChromeClient(new WebChromeClient());
+        webView.getSettings().setLoadsImagesAutomatically(true);
+        webView.getSettings().setAllowFileAccess(true);
 // Set a web view client and a chrome client
         webView.setWebViewClient(new WebViewClient());
+
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onPermissionRequest(final PermissionRequest request) {
@@ -84,8 +96,19 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
-        webView.loadUrl("https://appr.tc/r/84165087988");
-        }
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.loadUrl("sejpalsinh.github.io/#001abc");
 
 
-        }
+
+
+
+    }
+
+
+
+    }
+
+
+
+
