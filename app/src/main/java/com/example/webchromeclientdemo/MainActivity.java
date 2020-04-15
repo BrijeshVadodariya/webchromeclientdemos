@@ -97,11 +97,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl("sejpalsinh.github.io/#001abc");
-
-
-
-
+        webView.loadUrl("https://sejpalsinh.github.io/#001abc");
 
     }
 
